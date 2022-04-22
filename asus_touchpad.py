@@ -48,7 +48,7 @@ while tries > 0:
         lines = f.readlines()
         for line in lines:
             # Look for the touchpad #
-            if touchpad_detected == 0 and ("Name=\"ASUE" in line or "Name=\"ELAN" in line) and "Touchpad" in line:
+            if touchpad_detected == 0 and "4F3:3101" in line and "Touchpad" in line:
                 touchpad_detected = 1
                 log.debug('Detect touchpad from %s', line.strip())
 
