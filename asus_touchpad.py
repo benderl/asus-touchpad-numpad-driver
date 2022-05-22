@@ -97,7 +97,7 @@ while tries > 0:
 
 # Start monitoring the touchpad
 try:
-fd_t = open('/dev/input/event' + str(touchpad), 'rb')
+    fd_t = open('/dev/input/event' + str(touchpad), 'rb')
 except PermissionError:
     log.error("Can't open /dev/input/event" + str(touchpad))
     exit(1)
