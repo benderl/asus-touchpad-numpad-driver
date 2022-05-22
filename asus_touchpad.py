@@ -15,8 +15,8 @@ import libevdev.const
 from libevdev import EV_ABS, EV_KEY, EV_SYN, Device, InputEvent
 
 # Setup logging
-# LOG=DEBUG sudo -E ./asus-touchpad-numpad-driver  # all messages
-# LOG=ERROR sudo -E ./asus-touchpad-numpad-driver  # only error messages
+# LOG=DEBUG sudo -E ./asus_touchpad.py  # all messages
+# LOG=ERROR sudo -E ./asus-touchpad.py # only error messages
 logging.basicConfig()
 log = logging.getLogger('Pad')
 log.setLevel(os.environ.get('LOG', 'INFO'))
@@ -96,9 +96,11 @@ while tries > 0:
     sleep(model_layout.try_sleep)
 
 # Start monitoring the touchpad
-
+try:
 fd_t = open('/dev/input/event' + str(touchpad), 'rb')
-fcntl(fd_t, F_SETFL, os.O_NONBLOCK)
+except PermissionError:
+    log.error("Can't open /dev/input/event" + str(touchpad))
+    exit(1)
 d_t = Device(fd_t)
 
 
@@ -257,7 +259,7 @@ while True:
                     deactivate_numlock()
                 continue
 
-            # Check if caclulator was hit #
+            # Check if calculator was hit #
             elif (x < 0.06 * maxx) and (y < 0.07 * maxy):
                 if numlock:
                     brightness = change_brightness(brightness)
